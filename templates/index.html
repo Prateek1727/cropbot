@@ -1,132 +1,234 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Crop Recommendation System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  </head>
-  <style>
-		h1 {
-			color: mediumseagreen;
-			text-align: center;
-		}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #c8e6c9 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
 
-		.warning {
-			color: red;
-			font-weight: bold;
-			text-align: center;
-		}
-		.card{
-		margin-left:410px;
-		margin-top: 20px;
-		color: white;
-		}
-		.container{
-		background:#edf2f7;
-		font-weight: bold;
-		padding-bottom:10px;
-		border-radius: 15px;
-		}
-	</style>
+        /* Navbar Styling */
+        .navbar {
+            background: #1a3c34 !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-weight: 600;
+            color: #a5d6a7 !important;
+        }
+        .nav-link {
+            color: #e0f7fa !important;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #a5d6a7 !important;
+        }
+        .btn-outline-success {
+            border-color: #a5d6a7;
+            color: #a5d6a7;
+        }
+        .btn-outline-success:hover {
+            background: #a5d6a7;
+            color: #1a3c34;
+        }
 
+        /* Container Styling */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+        }
 
+        /* Heading Styling */
+        h1 {
+            color: #2e7d32;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
 
+        /* Form Styling */
+        .form-control {
+            border: 1px solid #81c784;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: #f1f8e9;
+        }
+        .form-control:focus {
+            border-color: #2e7d32;
+            box-shadow: 0 0 8px rgba(46, 125, 50, 0.3);
+            background: #ffffff;
+        }
+        .form-label {
+            color: #1a3c34;
+            font-weight: 500;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background: #2e7d32;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #1a3c34;
+        }
 
-  <body style="background:#BCBBB8">
-  <!--=======================navbar=====================================================-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Crop Recommendation</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">About</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+        /* Result Card Styling */
+        .result-card {
+            margin: 2rem auto;
+            max-width: 400px;
+            background: #1a3c34;
+            color: #e0f7fa;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in;
+        }
+        .result-card img {
+            object-fit: cover;
+            height: 200px;
+        }
+        .card-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .card-title {
+            font-weight: 600;
+            color: #a5d6a7;
+        }
+        .card-text {
+            font-size: 1.1rem;
+            color: #e0f7fa;
+        }
+
+        /* Animation for Result Card */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .result-card {
+                max-width: 100%;
+            }
+            .form-group {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Crop Recommendation</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">About</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-3">
+        <h1>Crop Recommendation System <span>🌱</span></h1>
+
+        <!-- Form -->
+        <form action="/predict" method="POST">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="Nitrogen" class="form-label">Nitrogen (N)</label>
+                    <input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen value" class="form-control" required min="0" step="0.01">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="Phosphorus" class="form-label">Phosphorus (P)</label>
+                    <input type="number" id="Phosphorus" name="Phosphorus" placeholder="Enter Phosphorus value" class="form-control" required min="0" step="0.01">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="Potassium" class="form-label">Potassium (K)</label>
+                    <input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium value" class="form-control" required min="0" step="0.01">
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-4 form-group">
+                    <label for="Temperature" class="form-label">Temperature (°C)</label>
+                    <input type="number" id="Temperature" name="Temperature" placeholder="Enter Temperature" class="form-control" required min="0" step="0.01">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="Humidity" class="form-label">Humidity (%)</label>
+                    <input type="number" id="Humidity" name="Humidity" placeholder="Enter Humidity" class="form-control" required min="0" step="0.01">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="Ph" class="form-label">pH Value</label>
+                    <input type="number" id="Ph" name="Ph" placeholder="Enter pH value" class="form-control" required min="0" max="14" step="0.01">
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-4 form-group">
+                    <label for="Rainfall" class="form-label">Rainfall (mm)</label>
+                    <input type="number" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall" class="form-control" required min="0" step="0.01">
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary">Get Recommendation</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Result Card -->
+        {% if result %}
+        <div class="card result-card">
+            <img src="{{ url_for('static', filename='img.jpg') }}" class="card-img-top" alt="Crop Image">
+            <div class="card-body">
+                <h5 class="card-title">Recommended Crop</h5>
+                <p class="card-text">{{ result }}</p>
+            </div>
+        </div>
+        {% endif %}
     </div>
-  </div>
-</nav>
-
-<!--==========================================================================================-->
-  <div class="container my-3 mt-3">
-      <h1 class="text-success">Crop Recommendation System <span class="text-success">🌱</span></h1>
-
-<!--      adding form-->
-      <form action="/predict" method="POST">
-          <div class="row">
-              <div class="col-md-4">
-					<label for="Nitrogen">Nitrogen</label>
-					<input type="number" id="Nitrogen" name="Nitrogen" placeholder="Enter Nitrogen" class="form-control" required step="0">
-				</div>
-               <div class="col-md-4">
-					<label for="Phosporus">Phosphorus</label>
-					<input type="number" id="Phosporus" name="Phosporus" placeholder="Enter Phosphorus" class="form-control" required step="00">
-				</div>
-				<div class="col-md-4">
-					<label for="Potassium">Potassium</label>
-					<input type="number" id="Potassium" name="Potassium" placeholder="Enter Potassium" class="form-control" required step="0">
-				</div>
-          </div>
-
-          <div class="row mt-4">
-				<div class="col-md-4">
-					<label for="Temperature">Temperature</label>
-					<input type="number" step="0.01" id="Temperature" name="Temperature" placeholder="Enter Temperature in °C" class="form-control" required step="0">
-				</div>
-				<div class="col-md-4">
-					<label for="Humidity">Humidity</label>
-					<input type="number" step="0.01" id="Humidity" name="Humidity" placeholder="Enter Humidity in %" class="form-control" required step="0">
-				</div>
-				<div class="col-md-4">
-					<label for="pH">pH</label>
-					<input type="number" step="0.01" id="Ph" name="Ph" placeholder="Enter pH value" class="form-control" required step="0">
-				</div>
-			</div>
-
-          <div class="row mt-4">
-				<div class="col-md-4">
-					<label for="Rainfall">Rainfall</label>
-					<input type="number" step="0.01" id="Rainfall" name="Rainfall" placeholder="Enter Rainfall in mm" class="form-control" required>
-				</div>
-			</div>
-
-
-
-           <div class="row mt-4">
-
-           <div class="col-md-12 text-center">
-				<button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>
-			</div>
-			</div>
-      </form>
-
-
-
-       {% if result %}
-		<div class="card bg-dark" style="width: 18rem;">
-		  <img src="{{url_for('static', filename='img.jpg')}}" class="card-img-top" alt="...">
-		  <div class="card-body">
-			<h5 class="card-title">Recommend Crop for cultivation is:</h5>
-			<p class="card-text">{{ result }}</p>
-		  </div>
-		</div>
-	   {% endif %}
-  </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-  </body>
+</body>
 </html>
